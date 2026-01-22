@@ -1416,28 +1416,34 @@
       </div>
     </nav>
     <div
-      id="notificationsPanel"
-      class="fixed top-20 right-4 w-80 bg-white dark:bg-gray-800 shadow-xl rounded-xl hidden z-50"
+  id="notificationsPanel"
+  class="fixed top-20 right-4 w-80 bg-white dark:bg-gray-800 shadow-xl rounded-xl hidden z-50"
+>
+  <div
+    class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700"
+  >
+    <span
+      id="notificationsTitle"
+      class="font-semibold text-gray-800 dark:text-white"
     >
-      <div
-        class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700"
-      >
-        <span class="font-semibold text-gray-800 dark:text-white">
-          الإشعارات
-        </span>
+      الإشعارات
+    </span>
 
-        <button
-          onclick="closeNotifications()"
-          class="text-gray-500 hover:text-red-500 text-xl font-bold"
-        >
-          ×
-        </button>
-      </div>
+    <button
+      onclick="closeNotifications()"
+      class="text-gray-500 hover:text-red-500 text-xl font-bold"
+    >
+      ×
+    </button>
+  </div>
 
-      <div class="p-4 text-sm text-gray-600 dark:text-gray-300">
-        🔔 لا توجد إشعارات جديدة
-      </div>
-    </div>
+  <div
+    id="notificationsEmpty"
+    class="p-4 text-sm text-gray-600 dark:text-gray-300"
+  >
+    🔔 لا توجد إشعارات جديدة
+  </div>
+</div>
 
     <!-- القائمة الجانبية -->
     <div id="menuOverlay" class="menu-overlay" onclick="closeSideMenu()"></div>
@@ -3213,11 +3219,11 @@
         >
           <div class="flex space-x-3 space-x-reverse">
             <button
-              id="openAppBtn"
-              class="flex-1 bg-[#0098DA] text-white py-3 px-6 rounded-xl font-medium hover:bg-[#0284C7] transition-colors"
-            >
-              فتح التطبيق
-            </button>
+  id="openAppBtn"
+  class="w-full bg-primary text-white py-3 rounded-xl font-medium hover:opacity-90 transition"
+>
+  فتح التطبيق
+</button>
             <div class="flex space-x-2 space-x-reverse">
               <!-- زر المفضلة -->
               <button
@@ -3334,23 +3340,20 @@
       margin: 0 auto 15px;
     "></div>
 
-    <h3 style="text-align:center;margin-bottom:20px">
-      مشاركة التطبيق
-    </h3>
+<h3 id="shareTitle" style="text-align:center;margin-bottom:20px"></h3>
 
-    <div style="display:flex;justify-content:space-around">
-      <a id="wa" target="_blank">واتساب</a>
-      <a id="fb" target="_blank">فيسبوك</a>
-      <a id="tg" target="_blank">تيليجرام</a>
-      <a id="tw" target="_blank">تويتر</a>
-    </div>
+<div style="display:flex;justify-content:space-around">
+  <a id="wa" target="_blank"></a>
+  <a id="fb" target="_blank"></a>
+  <a id="tg" target="_blank"></a>
+  <a id="tw" target="_blank"></a>
+</div>
 
-    <button
-      onclick="closeShare()"
-      style="width:100%;margin-top:20px"
-    >
-      إغلاق
-    </button>
+<button
+  id="closeShareBtn"
+  onclick="closeShare()"
+  style="width:100%;margin-top:20px"
+></button>
 
   </div>
 </div>
@@ -3559,6 +3562,14 @@
           categoryTopRatedDesc: "اكتشف التطبيقات الأعلى تقييماً",
           categoryNewestDesc: "اكتشف أحدث التطبيقات",
           categoryFeaturedGamesDesc: "اكتشف أفضل الألعاب المميزة",
+          shareApp: "مشاركة التطبيق",
+shareWhatsApp: "واتساب",
+shareFacebook: "فيسبوك",
+shareTelegram: "تيليجرام",
+shareTwitter: "تويتر",
+closeShare: "إغلاق",
+notifications: "الإشعارات",
+noNotifications: "🔔 لا توجد إشعارات جديدة",
         },
         English: {
           appTitle: "FLUXY",
@@ -3643,6 +3654,14 @@
           categoryTopRatedDesc: "Discover the top rated apps",
           categoryNewestDesc: "Discover the newest apps",
           categoryFeaturedGamesDesc: "Discover the best featured games",
+          shareApp: "Share App",
+shareWhatsApp: "WhatsApp",
+shareFacebook: "Facebook",
+shareTelegram: "Telegram",
+shareTwitter: "Twitter",
+closeShare: "Close",
+notifications: "Notifications",
+noNotifications: "🔔 No new notifications",
         },
         Français: {
           appTitle: "FLUXY",
@@ -3730,6 +3749,14 @@
           categoryTopRatedDesc: "Découvrez les applications les mieux notées",
           categoryNewestDesc: "Découvrez les applications les plus récentes",
           categoryFeaturedGamesDesc: "Découvrez les meilleurs jeux en vedette",
+          shareApp: "Partager l'application",
+shareWhatsApp: "WhatsApp",
+shareFacebook: "Facebook",
+shareTelegram: "Telegram",
+shareTwitter: "Twitter",
+closeShare: "Fermer",
+notifications: "Notifications",
+noNotifications: "🔔 Aucune nouvelle notification",
         },
       };
 
@@ -3864,6 +3891,29 @@
           const element = document.getElementById(id);
           if (element) {
             element.textContent = text;
+            // ✅ تحديث نافذة مشاركة التطبيق
+const shareTitle = document.getElementById("shareTitle");
+const wa = document.getElementById("wa");
+const fb = document.getElementById("fb");
+const tg = document.getElementById("tg");
+const tw = document.getElementById("tw");
+const closeShareBtn = document.getElementById("closeShareBtn");
+
+if (shareTitle) shareTitle.textContent = t.shareApp;
+if (wa) wa.textContent = t.shareWhatsApp;
+if (fb) fb.textContent = t.shareFacebook;
+if (tg) tg.textContent = t.shareTelegram;
+if (tw) tw.textContent = t.shareTwitter;
+if (closeShareBtn) closeShareBtn.textContent = t.closeShare;
+// ✅ نافذة الإشعارات
+const notificationsTitle = document.getElementById("notificationsTitle");
+const notificationsEmpty = document.getElementById("notificationsEmpty");
+
+if (notificationsTitle)
+  notificationsTitle.textContent = t.notifications;
+
+if (notificationsEmpty)
+  notificationsEmpty.textContent = t.noNotifications;
           }
         });
 
@@ -6907,6 +6957,32 @@
     if (e.target === sheet) closeShare();
   });
 })();
+function openCurrentApp() {
+  let app;
+
+  if (currentAppIndex === -1) {
+    // في حالة فتح من carousel أو المفضلة
+    const appName = document.getElementById("modalAppName").textContent;
+    app = apps.find(a => a.name === appName);
+  } else {
+    // في حالة فتح من الشبكة
+    app = filteredApps[currentAppIndex]; 
+  }
+
+  if (!app) return;
+
+  if (app.url && app.url.trim() !== "") {
+    location.href = app.url;
+  } else {
+    alert("لا يوجد رابط لهذا التطبيق");
+  }
+}
+document.addEventListener("DOMContentLoaded", () => {
+  const openBtn = document.getElementById("openAppBtn");
+  if (openBtn) {
+    openBtn.addEventListener("click", openCurrentApp);
+  }
+});
 </script>
   </body>
 </html>
